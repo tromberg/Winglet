@@ -44,7 +44,7 @@ trait MBindHelper {
   var defaultShowTemplate = <field:value/>
   var defaultShowEmptyTemplate = NodeSeq.Empty
   // IntelliJ gets confused by entity references emsp (u2003) and ensp(2002)
-  var defaultInputTemplate = <p><label><field:caption /></label>{"\u2003"}<field:hint><span class="fieldhint"><hint /></span></field:hint><br /><field:input />{"\u2002"}<field:message errorClass="errorBox" warningClass="warningBox" noticeClass="noticeBox" /></p>
+  var defaultInputTemplate = <p><label><field:caption /></label>{"\u2003"}<span class="fieldhint"><field:hint /></span><br /><field:input />{"\u2002"}<field:message errorClass="errorBox" warningClass="warningBox" noticeClass="noticeBox" /></p>
   var defaultCaptionTemplate = <th><field:caption /></th>
 
   def currentNode = _currentNode.value
