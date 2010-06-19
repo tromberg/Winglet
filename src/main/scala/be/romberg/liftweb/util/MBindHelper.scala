@@ -127,9 +127,10 @@ trait MBindHelper {
    * For a field hint to be displayed, the field must extend HintedField
    */
   def defaultInputField[A <: Mapper[A]](field:MappedField[_,A]): NodeSeq = {
-    val hint:String = if (field.isInstanceOf[HintedField[_, _]])
-      field.asInstanceOf[HintedField[Any,A]].fieldHintWithRequired
-    else ""
+    val hint:String = field match {
+      case hf:HintedField[_, _] => hf.fieldHintWithRequired
+      case _ => ""
+    }
 
     BindHelpers.bind("field", currentInputTemplate,
       "caption" -> field.displayName,
@@ -218,7 +219,7 @@ trait MBindHelper {
           if (s.child.length > 0) _currentShowTemplate(s.child)
           _currentNode(s)
           val res = (specialBinding orElse ((l:String) => l match {case label =>
-            data.fieldByName(label.toLowerCase).map((field:MappedField[_,A]) => defaultShowField[A](field)
+            data.fieldByName(label).map((field:MappedField[_,A]) => defaultShowField[A](field)
             ) openOr Text("ERROR:Field not found:" + s.label)}))(s.label)
           if (s.child.length > 0) _currentShowTemplate(saveTemplate)
           res
@@ -228,7 +229,7 @@ trait MBindHelper {
           if (s.child.length > 0) _currentInputTemplate(s.child)
           _currentNode(s)
           val res = (specialBinding orElse ((l:String) => l match {case label =>
-            data.fieldByName(label.toLowerCase).map((field:MappedField[_,A]) => defaultInputField[A](field)
+            data.fieldByName(label).map((field:MappedField[_,A]) => defaultInputField[A](field)
             ) openOr Text("ERROR:Field not found:" + s.label)}))(s.label)
           if (s.child.length > 0) _currentInputTemplate(saveTemplate)
           res
@@ -283,7 +284,7 @@ trait MBindHelper {
           if (s.child.length > 0) _currentCaptionTemplate(s.child)
           _currentNode(s)
           val res = (specialBinding orElse ((l:(Option[Mapper[A]],Int,String)) => l match {case (_, _, label) =>
-            data.first.fieldByName(label.toLowerCase).map((field:MappedField[_,A]) => defaultFieldCaption[A](field)
+            data.first.fieldByName(label).map((field:MappedField[_,A]) => defaultFieldCaption[A](field)
             ) openOr Text("ERROR:Field not found:" + label)}))(None, 0, s.label)
           if (s.child.length > 0) _currentCaptionTemplate(saveTemplate)
           res

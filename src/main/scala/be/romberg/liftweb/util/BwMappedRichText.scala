@@ -55,8 +55,6 @@ class BwMappedRichText[T<:Mapper[T]](fieldOwner: T) extends MappedText[T](fieldO
   def filterUnchangedInitialText(in: String):String = {
     val noWsIn = whitespaceRx.replaceAllIn(in, "")
     val noWsInitial = whitespaceRx.replaceAllIn(inputInitialTextWhenEmpty, "")
-    Log.info("submitted:" + noWsIn)
-    Log.info("default:" + noWsInitial)
     if (noWsIn == noWsInitial)
       ""
     else

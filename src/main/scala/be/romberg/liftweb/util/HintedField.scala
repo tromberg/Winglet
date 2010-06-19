@@ -13,9 +13,8 @@ trait HintedField[FieldType <: Any,OwnerType <: Mapper[OwnerType]] extends Mappe
   override def fieldId = Some(Text(Helpers.nextFuncName))
   // little used now - replaced by MBindHelper
   def toFormFull : NodeSeq = {
-    val hintHtml : NodeSeq = if (fieldHint.isDefined) <span class="fieldhint">{fieldHint.getOrElse("")}</span> else Nil
-    val reqHtml : NodeSeq = if (isRequired) <span class="fieldhint">(Required)</span> else Nil
-    <label for={fieldId}>{displayName + "\u2003" + reqHtml + "\u2003" + hintHtml}</label> ++ <br /> ++ toForm.open_!
+    def req = if (isRequired) "(Required)\u2003" else ""
+    <label for={fieldId}>{Text(displayName + "\u2003")}<span class="fieldhint">{req + fieldHint.getOrElse("")}</span></label> ++ <br /> ++ toForm.open_!
 }
   def cssClasses : List[String] = (if (isRequired) "required" :: Nil else Nil)
 
